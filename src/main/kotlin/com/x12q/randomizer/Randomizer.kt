@@ -1,26 +1,21 @@
 package com.x12q.randomizer
 
 import com.github.michaelbull.result.*
-
-import com.x12q.randomizer.config.RandomizerCollection
-import com.x12q.randomizer.di.RDSingleton
 import com.x12q.randomizer.err.ErrorReport
 import com.x12q.randomizer.err.RandomizerErrors
-import com.x12q.randomizer.randomizer.di.DefaultRandom
+import com.x12q.randomizer.randomizer.RDClassData
+import com.x12q.randomizer.randomizer.RandomizerCollection
 import javax.inject.Inject
 import kotlin.random.Random
 import kotlin.reflect.*
 
-@RDSingleton
-class Randomizer @Inject constructor(
-    @DefaultRandom
+data class Randomizer @Inject constructor(
     private val random: Random,
-    private val randomizerCollection: RandomizerCollection,
+    val randomizerCollection: RandomizerCollection,
 ) {
 
     val possibleCollectionSizes: IntRange = 1..5
     val possibleStringSizes: IntRange = 1..10
-    val any: Any = "Anything"
 
     fun random(classData: RDClassData): Any? {
         val classRef: KClass<*> = classData.kClass

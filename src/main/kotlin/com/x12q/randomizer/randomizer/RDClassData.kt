@@ -1,10 +1,6 @@
-package com.x12q.randomizer
+package com.x12q.randomizer.randomizer
 
-import com.github.michaelbull.result.Err
-import com.github.michaelbull.result.Ok
-import com.github.michaelbull.result.Result
 import kotlin.reflect.*
-import kotlin.reflect.full.primaryConstructor
 
 
 /**

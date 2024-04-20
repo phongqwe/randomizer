@@ -2,8 +2,9 @@ package com.x12q.randomizer.randomizer.parameter
 
 import kotlin.reflect.KParameter
 import com.github.michaelbull.result.Result
-import com.x12q.randomizer.RDClassData
+import com.x12q.randomizer.randomizer.RDClassData
 import com.x12q.randomizer.err.ErrorReport
+import com.x12q.randomizer.randomizer.WithRDClassData
 
 /**
  * For randomizing parameter.
@@ -14,8 +15,8 @@ import com.x12q.randomizer.err.ErrorReport
  * - Generate random phone number
  * - etc
  */
-interface ParameterRandomizer<out T> {
-    val paramClassData: RDClassData
+interface ParameterRandomizer<out T>: WithRDClassData {
+    override val paramClassData: RDClassData
 
     /**
      * Check if this randomizer is applicable to a certain [parameter] or not.
