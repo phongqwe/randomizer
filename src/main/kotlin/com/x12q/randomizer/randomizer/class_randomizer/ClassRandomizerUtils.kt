@@ -2,18 +2,28 @@ package com.x12q.randomizer.randomizer.class_randomizer
 
 import com.x12q.randomizer.randomizer.RDClassData
 
+
+inline fun <reified Q, reified T>diffType():Boolean{
+    return RDClassData.from<Q>() != RDClassData.from<T>()
+}
+
 /**
- * Create a [ClassRandomizer] from a factory function ([makeRandom])
+ * Create a [ClassRandomizer] that perform checking using [condition] and generate random instances using [makeRandomIfApplicable]
  */
-inline fun <reified T> randomizer(crossinline makeRandom: () -> T): ClassRandomizer<T> {
-    val q = object : ClassRandomizer<T> {
+inline fun <reified T> randomizer(
+    crossinline condition: (RDClassData) -> Boolean,
+    crossinline makeRandomIfApplicable: () -> T,
+): ClassRandomizer<T> {
+    val rt = object : ClassRandomizer<T> {
         override val paramClassData: RDClassData = RDClassData.from<T>()
+        override fun isApplicable(classData: RDClassData): Boolean {
+            return condition(classData)
+        }
+
         override fun random(): T {
-            return makeRandom()
+            return makeRandomIfApplicable()
         }
     }
-    return q
+    return rt
 }
-fun basicRandomizers(): Collection<ClassRandomizer<*>> {
-    TODO()
-}
+

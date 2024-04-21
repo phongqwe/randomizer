@@ -25,7 +25,7 @@ class ParameterRandomizerUtilsTest {
 
         val rdmizer = paramRandomizer<String>(
             condition = ::condition,
-            generateRandomIfApplicable = ::ifApplicable
+            makeRandomIfApplicable = ::ifApplicable
         )
 
         val abc = RDClassData.from<TestObjects.Class1>()

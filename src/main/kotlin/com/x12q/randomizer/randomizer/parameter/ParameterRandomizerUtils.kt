@@ -7,11 +7,11 @@ import com.x12q.randomizer.randomizer.RDClassData
 import kotlin.reflect.KParameter
 
 /**
- * Create a [ParameterRandomizer] that check parameter with [condition], and generate random instances with [generateRandomIfApplicable]
+ * Create a [ParameterRandomizer] that check parameter with [condition], and generate random instances with [makeRandomIfApplicable]
  */
 inline fun <reified T> paramRandomizer(
     crossinline condition: (ParamInfo) -> Boolean,
-    crossinline generateRandomIfApplicable: (ParamInfo) -> T,
+    crossinline makeRandomIfApplicable: (ParamInfo) -> T,
 ): ParameterRandomizer<T> {
 
     return object : ParameterRandomizer<T>{
@@ -41,7 +41,7 @@ inline fun <reified T> paramRandomizer(
                 kParam = parameter,
                 parentClass = parentClassData
             )
-            return Ok(generateRandomIfApplicable(paramInfo))
+            return Ok(makeRandomIfApplicable(paramInfo))
         }
 
         override fun random(parameterClassData: RDClassData, parameter: KParameter, parentClassData: RDClassData): T? {

@@ -50,34 +50,37 @@ data class ABC2(val a: ABC, val t: String)
 data class Q<T>(val t: T)
 
 fun main() {
-    val comp = DaggerRDComponent.builder().build()
-    println(comp.random().nextInt())
-//    val abc = makeRandomInstance<ABC>()
-//    println(abc)
-//    val q=
-//        makeRandomInstance<Q<Int>>()
-//    println(q)
-//
-//    println(makeRandomInstance<ABC2>())
-    makeRandomInstance<ABC>(
-        randomizers = listOf(
-            randomizer<Int> {
-                123
-            },
-        ),
-        paramRandomizers = listOf(
-            paramRandomizer<Int>(
-                condition = { paramInfo ->
-                    val clazzData = paramInfo.paramClass
-                    val kParam: KParameter = paramInfo.kParam
-                    val parentClass: RDClassData = paramInfo.parentClass
-                    parentClass.kClass == ABC::class && kParam.name == "tm12"
-                },
-                generateRandomIfApplicable = { paramInfo ->
-                    123
-                }
-            ),
-        )
-    )
+//    val comp = DaggerRDComponent.builder().build()
+//    println(comp.random().nextInt())
+////    val abc = makeRandomInstance<ABC>()
+////    println(abc)
+////    val q=
+////        makeRandomInstance<Q<Int>>()
+////    println(q)
+////
+////    println(makeRandomInstance<ABC2>())
+//    makeRandomInstance<ABC>(
+//        randomizers = listOf(
+//            randomizer<Int>(
+//                condition = {true},
+//                makeRandomIfApplicable = {
+//                    123
+//                }
+//            ) ,
+//        ),
+//        paramRandomizers = listOf(
+//            paramRandomizer<Int>(
+//                condition = { paramInfo ->
+//                    val clazzData = paramInfo.paramClass
+//                    val kParam: KParameter = paramInfo.kParam
+//                    val parentClass: RDClassData = paramInfo.parentClass
+//                    parentClass.kClass == ABC::class && kParam.name == "tm12"
+//                },
+//                makeRandomIfApplicable = { paramInfo ->
+//                    123
+//                }
+//            ),
+//        )
+//    )
 }
 

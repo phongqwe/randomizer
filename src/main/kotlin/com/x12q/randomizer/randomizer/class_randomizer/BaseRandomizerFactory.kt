@@ -8,12 +8,5 @@ import kotlin.random.Random
 class BaseRandomizerFactory @Inject constructor(
     val random: Random
 ) {
-    val intRandomizer: ClassRandomizer<Int> by lazy {
-        randomizer {
-            random.nextInt()
-        }
-    }
-
-
     val baseRandomizers:List<ClassRandomizer<*>> = emptyList()
 }
