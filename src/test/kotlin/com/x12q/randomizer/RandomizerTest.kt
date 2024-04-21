@@ -2,6 +2,7 @@ package com.x12q.randomizer
 
 import com.github.michaelbull.result.Ok
 import com.x12q.randomizer.randomizer.RDClassData
+import com.x12q.randomizer.test.TestAnnotation
 import com.x12q.randomizer.test.TestSamples
 import com.x12q.randomizer.test.TestSamples.Class1
 import com.x12q.randomizer.test.TestSamples.Class2
@@ -12,7 +13,7 @@ import kotlin.test.BeforeTest
 import kotlin.test.Test
 
 
-class RandomizerTest {
+class RandomizerTest: TestAnnotation() {
 
     lateinit var rdm0: Randomizer
     lateinit var rdm: Randomizer
@@ -44,21 +45,22 @@ class RandomizerTest {
             Class1.tm12KParam,
             Class1.dt
         )
+        test{
+            rs shouldNotBe p0
 
-        rs shouldNotBe p0
-
-        rs shouldBe Ok(
-            spyParamRdm.random(
-                RDClassData.from<String>(),
-                Class1.tm12KParam,
-                RDClassData.from<Class1>(),
+            rs shouldBe Ok(
+                spyParamRdm.random(
+                    RDClassData.from<String>(),
+                    Class1.tm12KParam,
+                    RDClassData.from<Class1>(),
+                )
             )
-        )
 
-        rdm.randomConstructorParameter(
-            Class1.tm12KParam,
-            Class1.dt
-        ) shouldBe rs.component1()
+            rdm.randomConstructorParameter(
+                Class1.tm12KParam,
+                Class1.dt
+            ) shouldBe rs.component1()
+        }
     }
 
     /**
@@ -68,7 +70,9 @@ class RandomizerTest {
     fun random(){
         val p0 = rdm0.random(Class2.dt)
         val p1 = rdm.random(Class2.dt)
-        p1 shouldNotBe p0
-        p1 shouldBe classRdm.random()
+        test{
+            p1 shouldNotBe p0
+            p1 shouldBe classRdm.random()
+        }
     }
 }

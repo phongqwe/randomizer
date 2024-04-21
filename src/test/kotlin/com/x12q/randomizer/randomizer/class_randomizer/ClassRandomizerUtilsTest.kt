@@ -1,11 +1,12 @@
 package com.x12q.randomizer.randomizer.class_randomizer
 
 import com.x12q.randomizer.randomizer.RDClassData
+import com.x12q.randomizer.test.TestAnnotation
 import com.x12q.randomizer.test.TestSamples
 import io.kotest.matchers.shouldBe
 import kotlin.test.*
 
-class ClassRandomizerUtilsTest{
+class ClassRandomizerUtilsTest: TestAnnotation(){
     @Test
     fun randomizer(){
 
@@ -22,11 +23,10 @@ class ClassRandomizerUtilsTest{
             makeRandomIfApplicable = ::makeRandomIfApplicable
         )
 
-        rdm.isApplicable(RDClassData.from<TestSamples.Class1>()) shouldBe condition(RDClassData.from<TestSamples.Class1>())
-
-        rdm.isApplicable(RDClassData.from<Int>()) shouldBe condition(RDClassData.from<Int>())
-
-        rdm.random() shouldBe makeRandomIfApplicable()
-
+        test{
+            rdm.isApplicable(RDClassData.from<TestSamples.Class1>()) shouldBe condition(RDClassData.from<TestSamples.Class1>())
+            rdm.isApplicable(RDClassData.from<Int>()) shouldBe condition(RDClassData.from<Int>())
+            rdm.random() shouldBe makeRandomIfApplicable()
+        }
     }
 }
