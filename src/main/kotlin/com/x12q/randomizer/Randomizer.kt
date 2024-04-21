@@ -80,24 +80,16 @@ data class Randomizer @Inject constructor(
                  * This is for normal parameter
                  */
                 val paramData = RDClassData(classifier, paramKType)
+                val paramRandomizer = randomizerCollection.getParamRandomizer(paramData)
+                if(!paramRandomizer.isNullOrEmpty()){
+                    for(rd in paramRandomizer){
+                        if(rd.isApplicableTo(paramData,kParam,parentClassData)){
+                            val rs = rd.randomRs(paramData,kParam,parentClassData)
+                            return rs
+                        }
+                    }
+                }
 
-//                val randomizers = this.randomizerCollection.getCustomRandomizer(paramData)
-//                randomizers?.also { rl ->
-//                    for (randomizer in rl) {
-//                        /**
-//                         * The problem is the randomizers itself, it must house the entire randomizing logic within itself in order to do the generation.
-//                         * If I connect the randomizer back to these random function, it will become a circle loop.
-//                         * Therefore, the randomizer must be terminal operations (like a factory function)
-//                         */
-//                        val randomInstance = randomizer.random(paramData, kParam)
-//                        if (randomInstance != null) {
-//                            return Ok(randomInstance)
-//                        } else {
-//                            return Err(RandomizerErrors.CantGenerateRandom.report(classifier))
-//                        }
-//                    }
-//                }
-                // randomizers can be used for check,
                 val rt = random(paramData)
                 return Ok(rt)
             }

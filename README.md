@@ -21,5 +21,7 @@
     
 ## Roadmap:
 - create structure to manage custom class and parameter randomizer
+  - Design the way user provide parameter randomizer
+    - Increase param randomizer lookup speed
 - create base/primitive class randomizer + test
 - create parameter randomizer

@@ -15,18 +15,31 @@ import com.x12q.randomizer.randomizer.WithRDClassData
  * - Generate random phone number
  * - etc
  */
-interface ParameterRandomizer<out T>: WithRDClassData {
+interface ParameterRandomizer<out T> : WithRDClassData {
     override val paramClassData: RDClassData
 
     /**
      * Check if this randomizer is applicable to a certain [parameter] or not.
      */
-    fun isApplicableTo(parameterClassData: RDClassData, parameter: KParameter): Boolean
+    fun isApplicableTo(
+        parameterClassData: RDClassData,
+        parameter: KParameter,
+        parentClassData: RDClassData,
+    ): Boolean
 
     /**
      * Generate a random value
      */
-    fun randomRs(parameterClassData: RDClassData, parameter: KParameter): Result<T, ErrorReport>
-    fun random(parameterClassData: RDClassData, parameter: KParameter): T?
+    fun randomRs(
+        parameterClassData: RDClassData,
+        parameter: KParameter,
+        parentClassData: RDClassData,
+    ): Result<T, ErrorReport>
+
+    fun random(
+        parameterClassData: RDClassData,
+        parameter: KParameter,
+        parentClassData: RDClassData,
+    ): T?
 }
 

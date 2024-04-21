@@ -2,31 +2,39 @@ package com.x12q.randomizer.randomizer
 
 import com.x12q.randomizer.randomizer.class_randomizer.ClassRandomizer
 import com.x12q.randomizer.randomizer.parameter.ParameterRandomizer
+import javax.inject.Inject
 
 /**
- * Simply a collection of [ClassRandomizer] and [ParameterRandomizer]
+ * A collection of [ClassRandomizer] and [ParameterRandomizer]
  */
 data class RandomizerCollection(
     val parameterRandomizers: Map<RDClassData, List<ParameterRandomizer<*>>>,
     val randomizers: Map<RDClassData, ClassRandomizer<*>>
 ) {
 
+    @Inject
+    constructor():this(emptyMap(), emptyMap())
 
-    fun addParamRandomizer(randomizer: Collection<ParameterRandomizer<*>>): RandomizerCollection {
-        TODO("Not yet implemented")
+    fun addParamRandomizer(newRandomizers: Collection<ParameterRandomizer<*>>): RandomizerCollection {
+        val newMap = newRandomizers.groupBy { it.paramClassData }
+        return this.copy(
+            parameterRandomizers = parameterRandomizers + newMap
+        )
     }
 
-    fun getParamRandomizer(key: RDClassData): List<ParameterRandomizer<*>> {
-        TODO("Not yet implemented")
+    fun getParamRandomizer(key: RDClassData): List<ParameterRandomizer<*>>? {
+        return parameterRandomizers[key]
     }
 
 
-    fun addRandomizers(randomizers: Collection<ClassRandomizer<*>>): RandomizerCollection {
-        TODO("Not yet implemented")
+    fun addRandomizers(newRandomizers: Collection<ClassRandomizer<*>>): RandomizerCollection {
+        return this.copy(
+            randomizers = randomizers + newRandomizers.associateBy { it.paramClassData }
+        )
     }
 
     fun getRandomizer(key: RDClassData): ClassRandomizer<*>? {
-        TODO("Not yet implemented")
+        return randomizers[key]
     }
 
 }

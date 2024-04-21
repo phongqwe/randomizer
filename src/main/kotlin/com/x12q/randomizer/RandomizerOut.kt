@@ -45,11 +45,11 @@ inline fun <reified T : Any> makeRandomInstance(
 }
 
 
-data class ABC(val lst:List<Float>)
-data class ABC2(val a: ABC, val t:String)
-data class Q<T>(val t:T)
+data class ABC(val lst: List<Float>, val tm12: Int)
+data class ABC2(val a: ABC, val t: String)
+data class Q<T>(val t: T)
 
-fun main(){
+fun main() {
     val comp = DaggerRDComponent.builder().build()
     println(comp.random().nextInt())
 //    val abc = makeRandomInstance<ABC>()
@@ -66,15 +66,18 @@ fun main(){
             },
         ),
         paramRandomizers = listOf(
-            paramRandomizer<Int> { paramInfo ->
-                val clazzData = paramInfo.paramClassData
-                val kParam: KParameter = paramInfo.kParam
-                val parentClass: RDClassData = paramInfo.parentClass
-                TODO()
-            },
-
-            )
+            paramRandomizer<Int>(
+                condition = { paramInfo ->
+                    val clazzData = paramInfo.paramClass
+                    val kParam: KParameter = paramInfo.kParam
+                    val parentClass: RDClassData = paramInfo.parentClass
+                    parentClass.kClass == ABC::class && kParam.name == "tm12"
+                },
+                generateRandomIfApplicable = { paramInfo ->
+                    123
+                }
+            ),
+        )
     )
-
 }
 
