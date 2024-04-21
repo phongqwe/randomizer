@@ -4,12 +4,11 @@ import com.x12q.randomizer.di.DaggerRDComponent
 import com.x12q.randomizer.randomizer.RDClassData
 import com.x12q.randomizer.randomizer.class_randomizer.ClassRandomizer
 import com.x12q.randomizer.randomizer.parameter.ParameterRandomizer
-import com.x12q.randomizer.randomizer.parameter.paramRandomizer
-import com.x12q.randomizer.randomizer.class_randomizer.randomizer
 import kotlin.random.Random
-import kotlin.reflect.KParameter
 
-
+/**
+ * Make a random instance of [T]
+ */
 inline fun <reified T : Any> makeRandomInstance(
     random: Random = Random,
 ): T {
@@ -22,6 +21,10 @@ inline fun <reified T : Any> makeRandomInstance(
     return randomizer.random(q) as T
 }
 
+/**
+ * Make a random instance of [T] with the option to specify [randomizers] and [paramRandomizers] that
+ * can override default random logic for particular classes or constructor parameters
+ */
 inline fun <reified T : Any> makeRandomInstance(
     random: Random = Random,
     randomizers: Collection<ClassRandomizer<*>>,
@@ -35,8 +38,8 @@ inline fun <reified T : Any> makeRandomInstance(
 
     val randomizer2 = randomizer.copy(
         randomizerCollection = randomizer.randomizerCollection
-            .addParamRandomizer(paramRandomizers)
-            .addRandomizers(randomizers)
+            .addParamRandomizer(*paramRandomizers.toTypedArray())
+            .addRandomizers(*randomizers.toTypedArray())
     )
 
     // generate random

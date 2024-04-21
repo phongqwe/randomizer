@@ -15,7 +15,7 @@ data class RandomizerCollection(
     @Inject
     constructor():this(emptyMap(), emptyMap())
 
-    fun addParamRandomizer(newRandomizers: Collection<ParameterRandomizer<*>>): RandomizerCollection {
+    fun addParamRandomizer(vararg newRandomizers: ParameterRandomizer<*>): RandomizerCollection {
         val newMap = newRandomizers.groupBy { it.paramClassData }
         return this.copy(
             parameterRandomizers = parameterRandomizers + newMap
@@ -27,7 +27,7 @@ data class RandomizerCollection(
     }
 
 
-    fun addRandomizers(newRandomizers: Collection<ClassRandomizer<*>>): RandomizerCollection {
+    fun addRandomizers(vararg newRandomizers: ClassRandomizer<*>): RandomizerCollection {
         return this.copy(
             randomizers = randomizers + newRandomizers.associateBy { it.paramClassData }
         )

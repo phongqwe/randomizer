@@ -24,27 +24,31 @@ data class Randomizer @Inject constructor(
             return primitive
         }
 
-        val constructors = classRef.constructors.shuffled(random)
+        val customClassRdm = randomizerCollection.getRandomizer(classData)
+        if(customClassRdm!=null){
+            return customClassRdm.random()
+        }else{
+            val constructors = classRef.constructors.shuffled(random)
 
-        for (constructor in constructors) {
-            try {
-                val arguments = constructor.parameters.map { kParam ->
-                    randomConstructorParameter(
-                        kParam = kParam,
-                        parentClassData = classData,
-                    )
-                }.toTypedArray()
-                return constructor.call(*arguments)
-            } catch (e: Throwable) {
-                e.printStackTrace()
-                // no-op. We catch any possible error here that might occur during class creation
+            for (constructor in constructors) {
+                try {
+                    val arguments = constructor.parameters.map { kParam ->
+                        randomConstructorParameter(
+                            kParam = kParam,
+                            parentClassData = classData,
+                        )
+                    }.toTypedArray()
+                    return constructor.call(*arguments)
+                } catch (e: Throwable) {
+                    e.printStackTrace()
+                    // no-op. We catch any possible error here that might occur during class creation
+                }
             }
         }
-
         throw IllegalArgumentException()
     }
 
-    private fun randomConstructorParameter(kParam: KParameter, parentClassData: RDClassData): Any? {
+    fun randomConstructorParameter(kParam: KParameter, parentClassData: RDClassData): Any? {
         val rs = randomConstructorParameterRs(kParam, parentClassData)
         when (rs) {
             is Ok -> {
@@ -61,7 +65,7 @@ data class Randomizer @Inject constructor(
         }
     }
 
-    private fun randomConstructorParameterRs(
+    fun randomConstructorParameterRs(
         kParam: KParameter,
         parentClassData: RDClassData
     ): Result<Any?, ErrorReport> {

@@ -4,19 +4,17 @@ import kotlin.reflect.KParameter
 import com.github.michaelbull.result.Result
 import com.x12q.randomizer.randomizer.RDClassData
 import com.x12q.randomizer.err.ErrorReport
-import com.x12q.randomizer.randomizer.WithRDClassData
 
 /**
- * For randomizing parameter.
- * This can override the default randomizer to generate special random value for paramters that meet its requirement.
+ * For randomizing parameters.
+ * This is to specify random logic for parameters that meet certain requirement (name, type, parent class, etc).
  * For example:
- * - Generate randomized latitude and longitude.
- * - Generate random human name
- * - Generate random phone number
- * - etc
+ * - Generate float representing latitude and longitude.
+ * - Generate string representing human name
+ * - Generate string/number representing phone number
  */
-interface ParameterRandomizer<out T> : WithRDClassData {
-    override val paramClassData: RDClassData
+interface ParameterRandomizer<out T> {
+    val paramClassData: RDClassData
 
     /**
      * Check if this randomizer is applicable to a certain [parameter] or not.
@@ -28,7 +26,7 @@ interface ParameterRandomizer<out T> : WithRDClassData {
     ): Boolean
 
     /**
-     * Generate a random value
+     * Generate a random parameter
      */
     fun randomRs(
         parameterClassData: RDClassData,
