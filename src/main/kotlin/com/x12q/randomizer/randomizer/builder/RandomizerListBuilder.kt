@@ -1,9 +1,8 @@
 package com.x12q.randomizer.randomizer.builder
 
-import com.x12q.randomizer.RandomContext
-import com.x12q.randomizer.random
 import com.x12q.randomizer.randomizer.ClassRandomizer
 import com.x12q.randomizer.randomizer.clazz.classRandomizer
+import com.x12q.randomizer.randomizer.context.RandomizerCollectionBuilder
 import com.x12q.randomizer.randomizer.primitive.*
 
 /**
@@ -17,12 +16,23 @@ class RandomizerListBuilder {
         return lst
     }
 
+    var collectionBuilder: RandomizerCollectionBuilder? = null
+
+    fun addCtx(collectionBuilder: RandomizerCollectionBuilder){
+        this.collectionBuilder = collectionBuilder
+    }
+
     /**
      * Add a [randomizer] to this builder.
      */
     fun add(randomizer: ClassRandomizer<*>): RandomizerListBuilder {
         lst.add(randomizer)
         return this
+    }
+
+
+    inline fun <reified T> randomizerForClass(): RandomizerListBuilder {
+        return add(classRandomizer<T>(this.collectionBuilder))
     }
 
     /**
@@ -84,7 +94,7 @@ class RandomizerListBuilder {
         lst.add(intRandomizer(until))
         return this
     }
-
+    @Deprecated("this function is not needed")
     fun int(): RandomizerListBuilder {
         lst.add(intRandomizer())
         return this
@@ -119,6 +129,7 @@ class RandomizerListBuilder {
     /**
      * Add a [Float] randomizer to this builder.
      */
+    @Deprecated("this function is not needed")
     fun float(): RandomizerListBuilder {
         lst.add(floatRandomizer())
         return this
@@ -170,8 +181,10 @@ class RandomizerListBuilder {
     }
 
     /**
-     * Convenient function to create a [ClassRandomizer] that can produce doubles floats
+     * Convenient function to create a [ClassRandomizer] that can produce doubles floats.
+     * This one use the system default randomizer.
      */
+    @Deprecated("this function is not needed")
     fun double(): RandomizerListBuilder {
         lst.add(doubleRandomizer())
         return this
@@ -204,6 +217,7 @@ class RandomizerListBuilder {
     /**
      * Add a [Boolean] randomizer to this builder.
      */
+    @Deprecated("this function is not needed")
     fun boolean(): RandomizerListBuilder {
         lst.add(booleanRandomizer())
         return this
@@ -238,6 +252,7 @@ class RandomizerListBuilder {
     /**
      * Add a [Long] randomizer to this builder.
      */
+    @Deprecated("this function is not needed")
     fun long(): RandomizerListBuilder {
         lst.add(longRandomizer())
         return this

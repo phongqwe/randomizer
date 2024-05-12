@@ -12,3 +12,10 @@ fun randomizers(
     listBuilder(builder)
     return builder.build()
 }
+fun randomizersBuilder(
+    listBuilder: RandomizerListBuilder.()->Unit
+):RandomizerListBuilder{
+    val builder = RandomizerListBuilder()
+    listBuilder(builder)
+    return builder
+}

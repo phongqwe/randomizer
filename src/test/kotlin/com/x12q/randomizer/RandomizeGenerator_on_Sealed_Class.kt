@@ -2,6 +2,7 @@ package com.x12q.randomizer
 
 import com.x12q.randomizer.randomizer.ClassRandomizer
 import com.x12q.randomizer.randomizer.builder.randomizers
+import com.x12q.randomizer.randomizer.builder.randomizersBuilder
 import com.x12q.randomizer.randomizer.clazz.SameClassRandomizer
 import com.x12q.randomizer.test_util.TestSamples
 import io.kotest.assertions.throwables.shouldNotThrow
@@ -37,14 +38,11 @@ class RandomizeGenerator_on_Sealed_Class {
             // because type T is unknown -> exception is thrown
             rdm.random(RDClassData.from<SealA>())
         }
-        random<SealA>(
-            randomizers = randomizers {
-                randomizerForClass {
-                    SealA.A1(456)
-                }
-//                randomizerForClass<SealA.A1<Int>>()
+        randomWithBuilder<SealA>(
+            randomizers = randomizersBuilder {
+                randomizerForClass<SealA.A1<Int>>() // this one is evaluate before randomWithBuilder -> it does not get the correct collection builder.
                 int{
-                    123
+                    456
                 }
             }
         ) shouldBe SealA.A1(456)

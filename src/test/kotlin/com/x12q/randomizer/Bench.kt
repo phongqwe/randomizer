@@ -2,11 +2,11 @@ package com.x12q.randomizer
 
 import com.x12q.randomizer.randomizer.builder.randomizers
 import com.x12q.randomizer.randomizer.clazz.classRandomizer
+import kotlinx.coroutines.*
 import kotlin.reflect.KClass
 import kotlin.reflect.KTypeParameter
 import kotlin.reflect.full.primaryConstructor
-
-
+import kotlin.test.Test
 
 
 data class Q1<K, V>(val l: Map<K, V>)
@@ -31,7 +31,20 @@ data class Q6<Q6_1, Q6_2>(
 )
 
 
+class TestBench{
+    private val topJob = Job()
+    val coroutineScope = CoroutineScope(topJob+ Dispatchers.Default)
+    @Test
+    fun qwe(){
+
+
+    }
+}
+
 fun main() {
+
+
+
 //    println(random<Map<Int,Double>>())
 //    println(random<List<Int>>())
 //

@@ -11,34 +11,36 @@ import kotlin.reflect.full.isSubclassOf
 data class RandomizerCollection(
     val parameterRandomizers: Map<RDClassData, List<ParameterRandomizer<*>>>,
     val classRandomizers: Map<RDClassData, List<ClassRandomizer<*>>>,
-    val random: Random = Random,
 ) {
 
     @Inject
-    constructor(
-        random: Random
-    ) : this(emptyMap(), emptyMap(),random)
+    constructor() : this(emptyMap(), emptyMap())
 
-    fun addParamRandomizer(vararg newRandomizers: ParameterRandomizer<*>): RandomizerCollection {
+    fun addParamRandomizer(newRandomizers: Collection<ParameterRandomizer<*>>): RandomizerCollection {
         val newMap = newRandomizers.groupBy { it.paramClassData }
         return this.copy(
             parameterRandomizers = parameterRandomizers + newMap
         )
     }
 
+    fun addParamRandomizer(vararg newRandomizers: ParameterRandomizer<*>): RandomizerCollection {
+        return this.addParamRandomizer(newRandomizers.toList())
+    }
+
     fun getParamRandomizer(key: RDClassData): List<ParameterRandomizer<*>>? {
         return parameterRandomizers[key]
     }
 
-    fun addRandomizers(vararg newRandomizers: ClassRandomizer<*>): RandomizerCollection {
-        val newMap:MutableMap<RDClassData, List<ClassRandomizer<*>>> = classRandomizers.toMutableMap()
+    fun addRandomizers(newRandomizers: Collection<ClassRandomizer<*>>): RandomizerCollection {
+
+        val newMap: MutableMap<RDClassData, List<ClassRandomizer<*>>> = classRandomizers.toMutableMap()
         val newRandomizersMap = newRandomizers.groupBy { it.returnedInstanceData }
 
-        for(newRdm in newRandomizersMap){
+        for (newRdm in newRandomizersMap) {
             val lst = newMap[newRdm.key]
-            val newLst = if(lst!=null){
+            val newLst = if (lst != null) {
                 lst + newRdm.value
-            }else{
+            } else {
                 newRdm.value
             }
             newMap[newRdm.key] = newLst
@@ -49,9 +51,20 @@ data class RandomizerCollection(
         )
     }
 
+    fun addRandomizers(vararg newRandomizers: ClassRandomizer<*>): RandomizerCollection {
+        return this.addRandomizers(newRandomizers.toList())
+    }
+
     fun getRandomizer(key: RDClassData): ClassRandomizer<*>? {
         val rt = this.classRandomizers.filter { it.key.kClass.isSubclassOf(key.kClass) }.values.flatten().randomOrNull()
         return rt
+    }
+
+    fun mergeWith(another: RandomizerCollection): RandomizerCollection {
+        return RandomizerCollection(
+            parameterRandomizers = this.parameterRandomizers + another.parameterRandomizers,
+            classRandomizers = this.classRandomizers + another.classRandomizers,
+        )
     }
 
 }

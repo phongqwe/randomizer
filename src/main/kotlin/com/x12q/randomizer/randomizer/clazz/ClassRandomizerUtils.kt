@@ -2,10 +2,17 @@ package com.x12q.randomizer.randomizer.clazz
 
 import com.x12q.randomizer.randomizer.ClassRandomizer
 import com.x12q.randomizer.RDClassData
-import com.x12q.randomizer.RandomContext
 import com.x12q.randomizer.random
+import com.x12q.randomizer.randomizer.context.RandomizerCollectionBuilder
 
 
+inline fun <reified T> classRandomizer(collectionBuilder: RandomizerCollectionBuilder?): ClassRandomizer<T> {
+    return classRandomizer {
+        random<T>(
+            collectionBuilder = collectionBuilder
+        )
+    }
+}
 
 /**
  * Create a [SameClassRandomizer]
